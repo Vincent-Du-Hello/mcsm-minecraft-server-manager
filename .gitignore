@@ -1,0 +1,4 @@
+mcsm.jar
+target/**
+src/test/**
+servers/**
