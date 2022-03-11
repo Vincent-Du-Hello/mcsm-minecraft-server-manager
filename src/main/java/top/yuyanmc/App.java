@@ -1,6 +1,7 @@
 package top.yuyanmc;
 
 import top.yuyanmc.install.Installer;
+import top.yuyanmc.run.Runner;
 
 public class App {
     public static void main(String[] args){
@@ -27,6 +28,15 @@ public class App {
                     }
                     Installer installer=new Installer(args[1], name);
                     installer.install();
+                    break;
+                case "run":
+                    if(args.length==1){
+                        System.out.println("Error: please enter minecraft instance name.");
+                        return;
+                    }
+                    name=args[1];
+                    Runner runner=new Runner(name);
+                    runner.run();
                     break;
             }
         }
