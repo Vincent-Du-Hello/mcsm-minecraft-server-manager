@@ -1,5 +1,6 @@
 package top.yuyanmc.run;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import top.yuyanmc.util.CastUtil;
@@ -13,10 +14,26 @@ public class Runner {
         ArrayList<String> cmdArr=new ArrayList<String>();
         cmdArr.add("java");
         cmdArr.add("-jar");
-        cmdArr.add("servers/"+name+"/server.jar");
+        cmdArr.add("server.jar");
         String[] cmd=(String[]) CastUtil.cast(cmdArr.toArray(),String.class);
         try {
-            Runtime.getRuntime().exec(cmd);
+            ProcessBuilder processBuilder=new ProcessBuilder(cmd);
+            processBuilder.directory(new File("servers/"+name+"/"));
+            Process process=processBuilder.start();
+            while(true){
+                while(process.getInputStream().available()!=0){
+                    System.out.print((char)process.getInputStream().read());
+                }
+                try{
+                    process.exitValue();
+                    while(process.getInputStream().available()!=0){
+                        System.out.print((char)process.getInputStream().read());
+                    }
+                    break;
+                }catch(IllegalThreadStateException e){
+
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
