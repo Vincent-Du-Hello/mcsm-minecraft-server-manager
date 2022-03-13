@@ -2,6 +2,7 @@ package top.yuyanmc.run;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import top.yuyanmc.util.CastUtil;
 
@@ -19,23 +20,20 @@ public class Runner {
         try {
             ProcessBuilder processBuilder=new ProcessBuilder(cmd);
             processBuilder.directory(new File("servers/"+name+"/"));
+            processBuilder.redirectOutput(Redirect.INHERIT);
+            processBuilder.redirectInput(Redirect.INHERIT);
+            processBuilder.redirectError(Redirect.INHERIT);
             Process process=processBuilder.start();
             while(true){
-                while(process.getInputStream().available()!=0){
-                    System.out.print((char)process.getInputStream().read());
-                }
                 try{
                     process.exitValue();
-                    while(process.getInputStream().available()!=0){
-                        System.out.print((char)process.getInputStream().read());
-                    }
                     break;
                 }catch(IllegalThreadStateException e){
 
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: server not found.");
         }
     }
 }
