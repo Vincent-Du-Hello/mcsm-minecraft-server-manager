@@ -1,6 +1,9 @@
 package top.yuyanmc.util;
 import java.net.URL;
 import java.net.URLConnection;
+
+import top.yuyanmc.App;
+
 import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
@@ -12,9 +15,12 @@ public class WebUtil {
         int byteread = 0;
         long total=0;
         long read=0;
+        App.getLogger().info("Path: "+path);
+        App.getLogger().info("File: "+file);
         URL url = new URL(path);
         try {
             URLConnection conn = url.openConnection();
+            App.getLogger().info("Connect head: "+conn.getHeaderFields().toString());
             InputStream inStream = conn.getInputStream();
             FileOutputStream fs = new FileOutputStream(file);
             byte[] buffer = new byte[1024];

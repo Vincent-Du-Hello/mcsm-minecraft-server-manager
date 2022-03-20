@@ -1,4 +1,6 @@
 package top.yuyanmc.install;
+import top.yuyanmc.App;
+import top.yuyanmc.properties.PropertiesEditor;
 import top.yuyanmc.util.WebUtil;
 
 import java.io.File;
@@ -26,7 +28,7 @@ public class Installer{
             System.out.print("Warning: server already exists. Continue? (y/n) ");
             char c;
             do{
-                try {
+                try{
                     c = (char)System.in.read();
                     System.in.skip(1024);
                     if(c=='n'){
@@ -42,7 +44,8 @@ public class Installer{
             }while(true);
         }
         System.out.println("1. Creating directory.");
-        dirCreator.mkdirs();
+        boolean b=dirCreator.mkdirs();
+        App.getLogger().info("Dir maked: "+String.valueOf(b));
         System.out.println("2. Downloading server.jar.");
         WebUtil.downloadNet(path, "servers/"+name+"/server.jar");
         try {
@@ -52,6 +55,10 @@ public class Installer{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("4. Writing server.properties");
+        File file=new File("servers/"+name+"/server.properties");
+        PropertiesEditor propertiesEditor=new PropertiesEditor(file);
+        propertiesEditor.writeMinecraftServerDefault();
     }
     public void install(){
         analyzePath();

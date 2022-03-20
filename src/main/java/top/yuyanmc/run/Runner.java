@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
+
+import top.yuyanmc.App;
 import top.yuyanmc.util.CastUtil;
 
 public class Runner {
@@ -13,7 +15,7 @@ public class Runner {
     }
     public void run(){
         ArrayList<String> cmdArr=new ArrayList<String>();
-        cmdArr.add("java");
+        cmdArr.add(App.getConfig().get("defaultJRE").toString());
         cmdArr.add("-jar");
         cmdArr.add("server.jar");
         String[] cmd=(String[]) CastUtil.cast(cmdArr.toArray(),String.class);
@@ -33,7 +35,7 @@ public class Runner {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error: server not found.");
+            System.err.println("Error: server/java not found.");
         }
     }
 }
